@@ -1,9 +1,10 @@
 from game_objects import Player
 from game_server import OneNight
-from roles import Werewolf, Seer, Villager, Mason, Minion, Robber, Troublemaker
+from roles import Werewolf, Seer, Villager, Mason, Minion, Robber, Troublemaker, Insomniac
 
 if __name__ == "__main__":
-    _roles = [Werewolf(), Werewolf(), Minion(), Seer(), Robber(), Troublemaker(), Mason(), Mason(), Villager()]
+    _roles = [Werewolf(), Werewolf(), Minion(), Seer(), Robber(), Troublemaker(), Mason(), Mason(), Insomniac(),
+              Villager(), Villager()]
     _players = [Player("Player{}".format(i)) for i in range(len(_roles))]
     game = OneNight(_players, _roles)
     game.run()

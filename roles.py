@@ -17,7 +17,8 @@ class Werewolf(Role):
     def __init__(self) -> None:
         super().__init__("Werewolf", 2)
 
-    def provide_info(self, players):
+    def play(self, players):
+        super().play(players)
         other_werewolves = list(
             filter(lambda p: p is not self.player, filter(lambda p: p.current_role_name is "Werewolf", players)))
         print("Your companion werewolf is: {}".format(other_werewolves[0].name))
@@ -46,7 +47,7 @@ class Mason(Role):
 
 class Seer(Role):
     def __init__(self) -> None:
-        super().__init__("Seer", 5)  # "You're a seer. Choose whom to look at: "
+        super().__init__("Seer", 5)
 
     def play(self, players):
         super().play(players)
@@ -56,7 +57,7 @@ class Seer(Role):
 
 class Robber(Role):
     def __init__(self) -> None:
-        super().__init__("Robber", 6)  # "You're a seer. Choose whom to look at: "
+        super().__init__("Robber", 6)
 
     def play(self, players):
         super().play(players)
@@ -68,7 +69,7 @@ class Robber(Role):
 
 class Troublemaker(Role):
     def __init__(self) -> None:
-        super().__init__("Troublemaker", 7)  # "You're a seer. Choose whom to look at: "
+        super().__init__("Troublemaker", 7)
 
     def play(self, players):
         super().play(players)
@@ -78,6 +79,15 @@ class Troublemaker(Role):
         temp = p1.current_role_name
         p1.current_role_name = p2.current_role_name
         p2.current_role_name = temp
+
+
+class Insomniac(Role):
+    def __init__(self) -> None:
+        super().__init__("Insomniac", 8)
+
+    def play(self, players):
+        super().play(players)
+        print("Your current role is: {}".format(self.player.current_role_name))
 
 
 class Villager(Role):
