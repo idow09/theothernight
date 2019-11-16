@@ -1,8 +1,8 @@
-class Player(object):
-    id_seed = 0
+from containers import Interfaces
 
+
+class Player(object):
     def __init__(self, name) -> None:
-        self.id = self.generate_id()
         self.name = name
         self.original_role = None
         self.current_role_name = None
@@ -17,16 +17,8 @@ class Player(object):
         role.player = self
 
     def take_vote(self, players):
-        id_voted = input(self.name + " please vote against a player ([1-{}]): ".format(len(players)))
-        player_voted_l = list(filter(lambda p: p.id is int(id_voted), players))
-        if len(player_voted_l) is not 1:
-            raise Exception("Unacceptable vote")
-        self.vote = player_voted_l[0]
-
-    @staticmethod
-    def generate_id():
-        Player.id_seed += 1
-        return Player.id_seed
+        m = self.name + " please vote.".format(len(players))
+        self.vote = Interfaces.console_ui().pick_from_list(players, m)
 
 
 class Role(object):

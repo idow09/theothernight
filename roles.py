@@ -1,35 +1,8 @@
+from containers import Interfaces
 from game_objects import Role
 
 
-class InfoRole(Role):
-    def __init__(self, name, index) -> None:
-        super().__init__(name, index)
-
-    def play(self, players):
-        super().play(players)
-        self.provide_info(players)
-
-    def provide_info(self, players):
-        pass
-
-
-class ActionRole(Role):
-    def __init__(self, name, index) -> None:
-        super().__init__(name, index)
-
-    def play(self, players):
-        super().play(players)
-        action = input(self.action_request())
-        self.play_action(action, players)
-
-    def action_request(self):
-        pass
-
-    def play_action(self, action, players):
-        pass  # TODO : force subclasses to implement
-
-
-class Doppelganger(ActionRole):
+class Doppelganger(Role):
     def __init__(self) -> None:
         super().__init__("Doppelganger", 1)
 
@@ -40,7 +13,7 @@ class Doppelganger(ActionRole):
         pass
 
 
-class Werewolf(InfoRole):
+class Werewolf(Role):
     def __init__(self) -> None:
         super().__init__("Werewolf", 2)
 
@@ -50,49 +23,61 @@ class Werewolf(InfoRole):
         print("Your companion werewolf is: {}".format(other_werewolves[0].name))
 
 
-class Minion(InfoRole):
+class Minion(Role):
     def __init__(self) -> None:
         super().__init__("Minion", 3)
 
-    def provide_info(self, players):
+    def play(self, players):
+        super().play(players)
         werewolves = list(filter(lambda p: p.current_role_name is "Werewolf", players))
         print("The werewolves are: {} and {}".format(werewolves[0].name, werewolves[1].name))
 
 
-class Mason(InfoRole):
+class Mason(Role):
     def __init__(self) -> None:
         super().__init__("Mason", 4)
 
-    def provide_info(self, players):
+    def play(self, players):
+        super().play(players)
         other_masons = list(
             filter(lambda p: p is not self.player, filter(lambda p: p.current_role_name is "Mason", players)))
         print("Your companion mason is: {}".format(other_masons[0].name))
 
 
-class Seer(ActionRole):
+class Seer(Role):
     def __init__(self) -> None:
         super().__init__("Seer", 5)  # "You're a seer. Choose whom to look at: "
 
-    def action_request(self):
-        return "Please choose the player you want to check on: "
-
-    def play_action(self, action, players):
-        p = players[int(action) - 1]
+    def play(self, players):
+        super().play(players)
+        p = Interfaces.console_ui().pick_from_list(players, "Please choose the player you want to check on.")
         print("{} is a {}".format(p.name, p.current_role_name))
 
 
-class Robber(ActionRole):
+class Robber(Role):
     def __init__(self) -> None:
         super().__init__("Robber", 6)  # "You're a seer. Choose whom to look at: "
 
-    def action_request(self):
-        return "Please choose the player you want to rob from: "
-
-    def play_action(self, action, players):
-        p = players[int(action) - 1]
+    def play(self, players):
+        super().play(players)
+        p = Interfaces.console_ui().pick_from_list(players, "Please choose the player you want to rob from.")
         print("You took {} from {}".format(p.current_role_name, p.name))
         self.player.current_role_name = p.current_role_name
         p.current_role_name = self.name
+
+
+class Troublemaker(Role):
+    def __init__(self) -> None:
+        super().__init__("Troublemaker", 7)  # "You're a seer. Choose whom to look at: "
+
+    def play(self, players):
+        super().play(players)
+        p_l = Interfaces.console_ui().pick_from_list(players, "Please choose the players you want to swap.", count=2)
+        print("Swapped.")
+        p1, p2 = p_l[0], p_l[1]
+        temp = p1.current_role_name
+        p1.current_role_name = p2.current_role_name
+        p2.current_role_name = temp
 
 
 class Villager(Role):
