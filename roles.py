@@ -42,10 +42,12 @@ class DoppelgangerRole(ActionRole):
 
 class WerewolfRole(InfoRole):
     def __init__(self) -> None:
-        super().__init__("Werewolf", 2)  # "You're a werewolf with ???"
+        super().__init__("Werewolf", 2)
 
     def provide_info(self, players):
-        pass
+        other_werewolves = list(
+            filter(lambda p: p is not self.player, filter(lambda p: p.current_role_name is "Werewolf", players)))
+        print("Your companion werewolf is: {}".format(other_werewolves[0].name))
 
 
 class MinionRole(InfoRole):
@@ -53,7 +55,8 @@ class MinionRole(InfoRole):
         super().__init__("Minion", 3)
 
     def provide_info(self, players):
-        pass
+        werewolves = list(filter(lambda p: p.current_role_name is "Werewolf", players))
+        print("The werewolves are: {} and {}".format(werewolves[0].name, werewolves[1].name))
 
 
 class MasonRole(InfoRole):
