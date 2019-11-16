@@ -29,7 +29,7 @@ class ActionRole(Role):
         pass  # TODO : force subclasses to implement
 
 
-class DoppelgangerRole(ActionRole):
+class Doppelganger(ActionRole):
     def __init__(self) -> None:
         super().__init__("Doppelganger", 1)
 
@@ -40,7 +40,7 @@ class DoppelgangerRole(ActionRole):
         pass
 
 
-class WerewolfRole(InfoRole):
+class Werewolf(InfoRole):
     def __init__(self) -> None:
         super().__init__("Werewolf", 2)
 
@@ -50,7 +50,7 @@ class WerewolfRole(InfoRole):
         print("Your companion werewolf is: {}".format(other_werewolves[0].name))
 
 
-class MinionRole(InfoRole):
+class Minion(InfoRole):
     def __init__(self) -> None:
         super().__init__("Minion", 3)
 
@@ -59,7 +59,7 @@ class MinionRole(InfoRole):
         print("The werewolves are: {} and {}".format(werewolves[0].name, werewolves[1].name))
 
 
-class MasonRole(InfoRole):
+class Mason(InfoRole):
     def __init__(self) -> None:
         super().__init__("Mason", 4)
 
@@ -69,7 +69,7 @@ class MasonRole(InfoRole):
         print("Your companion mason is: {}".format(other_masons[0].name))
 
 
-class SeerRole(ActionRole):
+class Seer(ActionRole):
     def __init__(self) -> None:
         super().__init__("Seer", 5)  # "You're a seer. Choose whom to look at: "
 
@@ -81,6 +81,20 @@ class SeerRole(ActionRole):
         print("{} is a {}".format(p.name, p.current_role_name))
 
 
-class VillagerRole(Role):
+class Robber(ActionRole):
+    def __init__(self) -> None:
+        super().__init__("Robber", 6)  # "You're a seer. Choose whom to look at: "
+
+    def action_request(self):
+        return "Please choose the player you want to rob from: "
+
+    def play_action(self, action, players):
+        p = players[int(action) - 1]
+        print("You took {} from {}".format(p.current_role_name, p.name))
+        self.player.current_role_name = p.current_role_name
+        p.current_role_name = self.name
+
+
+class Villager(Role):
     def __init__(self) -> None:
         super().__init__("Villager", 10)

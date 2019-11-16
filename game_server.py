@@ -44,6 +44,6 @@ class OneNight(object):
 
     def print_results(self):
         print("Game over!")
-        print("The village have decided, and {} was hung.".format(self.dead_player))
+        print("The village has decided, and {} was hung.".format(self.dead_player))
         print("{} was a {}".format(self.dead_player, self.dead_player.current_role_name))
         print("The winner(s) is/are: {}".format(self.winner))
